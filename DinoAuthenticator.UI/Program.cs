@@ -1,4 +1,4 @@
-namespace DinoAuthenticator;
+namespace DinoAuthenticator.UI;
 
 internal static class Program
 {

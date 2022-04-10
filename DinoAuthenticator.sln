@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DinoAuthenticator", "DinoAuthenticator.csproj", "{3A7120CD-AB50-4A1B-9878-FBF731B20126}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DinoAuthenticator.UI", "DinoAuthenticator.UI\DinoAuthenticator.UI.csproj", "{87D0E20B-E451-4935-9436-2E1F30954E0D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2F5C8059-B3B9-4FB2-9A1D-1327DFB7F7CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DinoAuthenticator.Test", "DinoAuthenticator.Test\DinoAuthenticator.Test.csproj", "{65CE0491-1FF3-4FE3-ABF2-983A4B3BA2B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DinoAuthenticator.Totp", "DinoAuthenticator.AccountsManager\DinoAuthenticator.Totp.csproj", "{54626692-0847-4E16-A205-C77781CDB6AB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{188E4B99-B2B9-4FEC-BACD-BE8A6E23B0DA}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
@@ -16,15 +20,23 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3A7120CD-AB50-4A1B-9878-FBF731B20126}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3A7120CD-AB50-4A1B-9878-FBF731B20126}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3A7120CD-AB50-4A1B-9878-FBF731B20126}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3A7120CD-AB50-4A1B-9878-FBF731B20126}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87D0E20B-E451-4935-9436-2E1F30954E0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87D0E20B-E451-4935-9436-2E1F30954E0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87D0E20B-E451-4935-9436-2E1F30954E0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87D0E20B-E451-4935-9436-2E1F30954E0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65CE0491-1FF3-4FE3-ABF2-983A4B3BA2B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65CE0491-1FF3-4FE3-ABF2-983A4B3BA2B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65CE0491-1FF3-4FE3-ABF2-983A4B3BA2B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65CE0491-1FF3-4FE3-ABF2-983A4B3BA2B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54626692-0847-4E16-A205-C77781CDB6AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54626692-0847-4E16-A205-C77781CDB6AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54626692-0847-4E16-A205-C77781CDB6AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54626692-0847-4E16-A205-C77781CDB6AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3A0F11AB-8348-4EE5-90B3-13E2A74F6292}
+		SolutionGuid = {7589EE3E-11D3-476F-A492-566CA38A494F}
 	EndGlobalSection
 EndGlobal

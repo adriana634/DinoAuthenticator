@@ -9,8 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Otp.NET" Version="1.2.2" />
-    <PackageReference Include="protobuf-net" Version="3.0.101" />
+    <ProjectReference Include="..\DinoAuthenticator.AccountsManager\DinoAuthenticator.Totp.csproj" />
   </ItemGroup>
 
 </Project>

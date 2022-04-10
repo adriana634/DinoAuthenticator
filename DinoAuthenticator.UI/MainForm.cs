@@ -1,16 +1,19 @@
-using OtpNet;
+using DinoAuthenticator.AccountsTotp;
 using Timer = System.Windows.Forms.Timer;
 
-namespace DinoAuthenticator;
+namespace DinoAuthenticator.UI;
 
 public partial class MainForm : Form
 {
     private static readonly int TIMER_INTERVAL = 1000;
     private static readonly int TIMER_LABEL_RED_THRESHOLD = 10;
+    private static readonly string ACCOUNTS_FILE_NAME = "accounts.bin";
 
     private Timer timer;
     private int remainingTotpSeconds;
-    
+
+    private AccountsManager accountsManager;
+
     public MainForm() : base()
     {
         InitializeComponent();
@@ -20,6 +23,8 @@ public partial class MainForm : Form
         this.timer = new Timer();
         this.timer.Interval = MainForm.TIMER_INTERVAL;
         this.timer.Tick += new EventHandler(this.Timer_tick);
+
+        this.accountsManager = new AccountsManager(MainForm.ACCOUNTS_FILE_NAME);
     }
 
     /// <summary>
@@ -44,20 +49,10 @@ public partial class MainForm : Form
 
     protected override void OnLoad(EventArgs e)
     {
-        string[] accountNames = AccountsManager.GetAccountNames();
+        string[] accountNames = this.accountsManager.GetAccountNames();
         this.accountSelector.Items.AddRange(accountNames);
 
         base.OnLoad(e);
-    }
-
-    private static ComputedTotp computeTotp(byte[] secretKey)
-    {
-        Totp totp = new Totp(secretKey, mode: OtpHashMode.Sha1, step: 30);
-        
-        string totpCode = totp.ComputeTotp();
-        int totpRemainingSeconds = totp.RemainingSeconds();
-
-        return new ComputedTotp(totpCode, totpRemainingSeconds);
     }
 
     private void computeAndDisplayTotp()
@@ -67,8 +62,8 @@ public partial class MainForm : Form
         string selectedAccount = (string)this.accountSelector.SelectedItem;
         this.accountNameLabel.Text = selectedAccount;
 
-        byte[] selectedAccountPrivateKey = AccountsManager.GetAccountSecretKey(selectedAccount);
-        ComputedTotp computedTotp = MainForm.computeTotp(selectedAccountPrivateKey);
+        byte[] selectedAccountPrivateKey = this.accountsManager.GetAccountSecretKey(selectedAccount);
+        ComputedTotp computedTotp = AccountsManager.ComputeTotp(selectedAccountPrivateKey);
 
         this.tokenLabel.Text = computedTotp.TotpCode;
         this.remainingTotpSeconds = computedTotp.InitialRemainingTotpSeconds;
@@ -101,7 +96,7 @@ public partial class MainForm : Form
 
     private void showAccountForm()
     {
-        AddAccountForm addAccountForm = new AddAccountForm();
+        AddAccountForm addAccountForm = new AddAccountForm(this.accountsManager);
 
         addAccountForm.ShowDialog(this);
 
@@ -110,7 +105,7 @@ public partial class MainForm : Form
 
     private void reloadAccounts()
     {
-        string[] accountNames = AccountsManager.GetAccountNames();
+        string[] accountNames = this.accountsManager.GetAccountNames();
         this.accountSelector.Items.Clear();
         this.accountSelector.Items.AddRange(accountNames);
     }

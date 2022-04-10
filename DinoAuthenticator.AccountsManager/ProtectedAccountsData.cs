@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace DinoAuthenticator;
+namespace DinoAuthenticator.AccountsTotp;
 
 internal static class ProtectedAccountsData
 {

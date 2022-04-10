@@ -1,15 +1,20 @@
 ﻿using OtpNet;
 using ProtoBuf;
 
-namespace DinoAuthenticator;
+namespace DinoAuthenticator.AccountsTotp;
 
-internal static class AccountsManager
+public class AccountsManager
 {
-    private static readonly string ACCOUNTS_FILE_NAME = "accounts.bin";
+    private readonly string accountsFilePath;
 
-    private static byte[] ReadAccountsFileBytes()
+    public AccountsManager(string accountsFilePath)
     {
-        using FileStream stream = File.Open(AccountsManager.ACCOUNTS_FILE_NAME, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+        this.accountsFilePath = accountsFilePath;
+    }
+
+    private static byte[] ReadAccountsFileBytes(string accountsFilePath)
+    {
+        using FileStream stream = File.Open(accountsFilePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
 
         // Read the source file into a byte array.
         byte[] bytes = new byte[stream.Length];
@@ -33,21 +38,21 @@ internal static class AccountsManager
         return bytes;
     }
 
-    private static void WriteAccountsIntoFile(List<Account> accounts)
+    private static void WriteAccountsIntoFile(string accountsFilePath, List<Account> accounts)
     {
         using MemoryStream stream = new MemoryStream();
         Serializer.Serialize(stream, accounts);
         byte[] newUnprotectedAccountsFileBytes = stream.ToArray();
 
         byte[] newProtectedAccountsFileBytes = ProtectedAccountsData.ProtectBytes(newUnprotectedAccountsFileBytes);
-        File.WriteAllBytes(AccountsManager.ACCOUNTS_FILE_NAME, newProtectedAccountsFileBytes);
+        File.WriteAllBytes(accountsFilePath, newProtectedAccountsFileBytes);
     }
 
-    private static List<Account> GetAccounts()
+    private static List<Account> GetAccounts(string accountsFilePath)
     {
-        if (File.Exists(AccountsManager.ACCOUNTS_FILE_NAME))
+        if (File.Exists(accountsFilePath))
         {
-            byte[] protectedAccountsFileBytes = AccountsManager.ReadAccountsFileBytes();
+            byte[] protectedAccountsFileBytes = AccountsManager.ReadAccountsFileBytes(accountsFilePath);
 
             if (protectedAccountsFileBytes.Length > 0)
             {
@@ -79,29 +84,39 @@ internal static class AccountsManager
         }
     }
 
-    internal static void SaveAccount(Account account)
+    public void SaveAccount(Account account)
     {
-        List<Account> accounts = AccountsManager.GetAccounts();
+        List<Account> accounts = AccountsManager.GetAccounts(this.accountsFilePath);
         accounts.Add(account);
 
-        WriteAccountsIntoFile(accounts);
+        WriteAccountsIntoFile(accountsFilePath, accounts);
     }
 
-    internal static string[] GetAccountNames()
+    public string[] GetAccountNames()
     {
-        List<Account> accounts = AccountsManager.GetAccounts();
+        List<Account> accounts = AccountsManager.GetAccounts(this.accountsFilePath);
 
         string[] accountNames = accounts.Select(account => account.AccountName).ToArray();
         return accountNames;
     }
 
-    internal static byte[] GetAccountSecretKey(string accountName)
+    public byte[] GetAccountSecretKey(string accountName)
     {
-        List<Account> accounts = AccountsManager.GetAccounts();
+        List<Account> accounts = AccountsManager.GetAccounts(this.accountsFilePath);
         
         Account account = accounts.Find(account => account.AccountName == accountName);
         string accountPrivateKey = account.SecretKey;
 
         return Base32Encoding.ToBytes(accountPrivateKey);
+    }
+
+    public static ComputedTotp ComputeTotp(byte[] secretKey)
+    {
+        Totp totp = new Totp(secretKey, mode: OtpHashMode.Sha1, step: 30);
+
+        string totpCode = totp.ComputeTotp();
+        int totpRemainingSeconds = totp.RemainingSeconds();
+
+        return new ComputedTotp(totpCode, totpRemainingSeconds);
     }
 }
