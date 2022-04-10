@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DinoAuthenticator.AccountsManager\DinoAuthenticator.Totp.csproj" />
+    <ProjectReference Include="..\DinoAuthenticator.AccountsTotp\DinoAuthenticator.AccountsTotp.csproj" />
   </ItemGroup>
 
 </Project>
