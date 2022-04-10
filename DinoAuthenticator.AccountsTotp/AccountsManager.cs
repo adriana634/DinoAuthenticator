@@ -89,7 +89,7 @@ public class AccountsManager
         List<Account> accounts = AccountsManager.GetAccounts(this.accountsFilePath);
         accounts.Add(account);
 
-        WriteAccountsIntoFile(accountsFilePath, accounts);
+        AccountsManager.WriteAccountsIntoFile(accountsFilePath, accounts);
     }
 
     public string[] GetAccountNames()
