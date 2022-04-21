@@ -9,8 +9,26 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DinoAuthenticator.AccountsManager\DinoAuthenticator.Totp.csproj" />
+    <PackageReference Include="ZXing.Net" Version="0.16.7" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DinoAuthenticator.AccountsTotp\DinoAuthenticator.AccountsTotp.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>
